@@ -32,11 +32,15 @@ with open("recipients.csv") as file:
         msg["To"] = row["email"]
         msg["Subject"] = SUBJECT
 
+        companyName = row["company"]
+        emailTo = row["email"]
+
         # Set HTML content
         msg.add_alternative(
             HTML_TEMPLATE.format(
                 name=row["name"],
-                company=row["company"]
+                company=row["company"],
+                role=row["role"]
             ),
             subtype="html"
         )
@@ -53,5 +57,7 @@ with open("recipients.csv") as file:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
             smtp.login(EMAIL, PASSWORD)
             smtp.send_message(msg)
+        print(f"Email successfully sent to , {companyName}. To {emailTo}") 
+
 
 print("All emails sent successfully!")
